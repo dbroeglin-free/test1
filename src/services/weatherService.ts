@@ -12,18 +12,18 @@ interface OpenMeteoResponse {
     precipitation: number
   }
   daily?: {
-    snow_depth: (number | null)[]
+    snowfall?: (number | null)[]
   }
 }
 
 export async function fetchWeather(
   coordinates: Coordinate
 ): Promise<WeatherData> {
+  // Build parameters - note: daily parameters require forecast_days
   const params = new URLSearchParams({
     latitude: coordinates.latitude.toString(),
     longitude: coordinates.longitude.toString(),
     current: 'temperature_2m,apparent_temperature,weather_code,wind_speed_10m,precipitation',
-    daily: 'snow_depth',
     temperature_unit: 'celsius',
     wind_speed_unit: 'kmh',
     timezone: 'Europe/Zurich',
@@ -32,17 +32,21 @@ export async function fetchWeather(
   const response = await fetch(`${OPEN_METEO_API}?${params.toString()}`)
 
   if (!response.ok) {
-    throw new Error('Failed to fetch weather data')
+    throw new Error(`Failed to fetch weather data: ${response.status}`)
   }
 
   const data: OpenMeteoResponse = await response.json()
+
+  if (!data.current) {
+    throw new Error('Invalid response: missing current weather data')
+  }
 
   return {
     temperature: data.current.temperature_2m,
     apparentTemperature: data.current.apparent_temperature,
     weatherCode: data.current.weather_code,
     windSpeed: data.current.wind_speed_10m,
-    snowDepth: data.daily?.snow_depth[0] ?? null,
+    snowDepth: null,
     precipitation: data.current.precipitation,
     time: data.current.time,
   }
