@@ -1,100 +1,191 @@
-# Azure Chalet Romandie - GitHub Copilot Challenge
+# ❄️ Météo des Neiges
 
-## Pre-requisites
+A static web application displaying real-time weather information for ski resorts in the Geneva region. Built with React, TypeScript, and Vite, deployed automatically to GitHub Pages on every push to `main`.
 
-### Preliminary note
+## 🎯 Features
 
-> [!IMPORTANT]
-> **Avoid using your corporate GitHub accounts** for this challenge as you will need to submit a public URL to your GitHub Pages to participate.
+- **Real-time Weather Data**: Fetches current weather conditions from the free [Open-Meteo API](https://open-meteo.com)
+- **Responsive Design**: Fully responsive layout that works on desktop and mobile devices
+- **Visual Weather Indicators**: Weather conditions displayed with emoji icons and color-coded temperature indicators
+- **Multiple Resorts**: Displays weather for 8 major ski resorts near Geneva:
+  - Chamonix (France)
+  - Verbier (Switzerland)
+  - Zermatt (Switzerland)
+  - Courmayeur (Italy)
+  - Les Gets (France)
+  - Tignes (France)
+  - Val d'Isère (France)
+  - Méribel (France)
+- **Automatic Updates**: Data is cached and refetched every 10 minutes
+- **Auto-Deployment**: GitHub Actions workflow automatically builds and deploys to GitHub Pages on every push to `main`
 
-### Getting Started Checklist
+## 🛠 Tech Stack
 
-1. ✅ Use your existing GitHub account with an active GitHub Subscription or use [Copilot Free plan](https://github.com/github-copilot/signup) (no credit card required!)
-2. ✅That's it! The challenge can be achieved on github.com. _Alternatively_ you can also:
-   1. ☑️ Download and install VS Code for your platform
-   2. ☑️ Install additional components (Git, Node.js, language runtimes)
-   3. ☑️ Enable AI features and sign in to GitHub Copilot
-   4. ☑️ Explore Copilot Chat and inline chat features
+- **React 19** - UI framework with functional components and hooks
+- **TypeScript** - Strict type safety
+- **Vite 7** - Fast build tool and dev server
+- **Tailwind CSS v4** - Utility-first styling
+- **React Router v7** - Client-side routing
+- **TanStack React Query v5** - Server state management for API data
+- **Leaflet + react-leaflet v5** - Interactive maps (for future enhancements)
+- **ESLint 9** - Code quality and consistency
+- **GitHub Actions** - CI/CD pipeline
 
-See below for the alternative steps:
+## 🚀 Getting Started
 
-<details>
-<summary>📥 Setup Steps (click to expand)</summary>
+### Prerequisites
 
-### Step 1: Download and Install VS Code
+- Node.js 20+ and npm
 
-Follow the official [VS Code Setup Guide](https://code.visualstudio.com/docs/setup/setup-overview) for detailed platform-specific instructions.
+### Installation
 
-Download and install Visual Studio Code for your platform:
+1. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-- [macOS](https://code.visualstudio.com/docs/setup/mac)
-- [Linux](https://code.visualstudio.com/docs/setup/linux)
-- [Windows](https://code.visualstudio.com/docs/setup/windows)
+2. **Start development server**:
+   ```bash
+   npm run dev
+   ```
+   The app will be available at `http://localhost:5173/test1/`
 
-VS Code is lightweight (< 200 MB download) and ships monthly releases with auto-update support.
+### Available Scripts
 
-> **Note:** If you choose to use VS Code Insiders, you will have access to the latest features but you may encounter occasional instability.
+```bash
+npm run dev          # Start development server with hot reload
+npm run build        # TypeScript check + production build → dist/
+npm run lint         # Run ESLint
+npm run preview      # Preview production build locally
+```
 
-### Step 2: Enable AI Features with GitHub Copilot
+## 📁 Project Structure
 
-Follow the [Copilot Setup Guide](https://code.visualstudio.com/docs/copilot/setup) to enable AI-powered coding:
+```
+src/
+├── App.tsx              # Root component with router and query provider
+├── main.tsx             # Application entry point
+├── index.css            # Global styles with Tailwind import
+├── env.d.ts             # Vite environment type declarations
+├── assets/              # Static assets
+├── components/          # Reusable UI components
+│   ├── Header.tsx       # Page header
+│   ├── Footer.tsx       # Page footer
+│   └── ResortCard.tsx   # Individual resort weather card
+├── data/                # Static data
+│   └── resorts.ts       # Resort definitions with coordinates
+├── pages/               # Route-level components
+│   └── Dashboard.tsx    # Main dashboard page
+├── services/            # API service modules
+│   ├── weatherService.ts    # Open-Meteo API integration
+│   └── weatherUtils.ts      # Weather description and color utilities
+└── types/               # Shared TypeScript interfaces
+    └── index.ts
+```
 
-1. Hover over the **Copilot icon** in the Status Bar and select **Use AI Features**
-2. Choose a sign-in method and follow the prompts
-3. If you don't have a Copilot subscription, you'll be signed up for the [Copilot Free plan](https://github.com/github-copilot/signup) with a monthly limit of inline suggestions and chat interactions
-4. Start using Copilot in VS Code!
+## 🌐 API Integration
 
-Learn more about [GitHub Copilot plans](https://docs.github.com/en/copilot/get-started/plans).
+The application fetches weather data from the free [Open-Meteo API](https://open-meteo.com):
 
-### Step 3: Install Additional Components
+- **Endpoint**: `https://api.open-meteo.com/v1/forecast`
+- **Data Retrieved**: Temperature, apparent temperature, weather code, wind speed, precipitation, and snow depth
+- **Timezone**: Europe/Zurich
+- **Cache Strategy**: 10-minute stale time with `refetchOnWindowFocus: false` to minimize API calls
 
-> [!TIP]
-> **Pro-tip**: Now that GitHub Copilot is enabled in your Visual Studio Code you can go to the Copilot chat in agent mode and ask Copilot to install dependencies for you.
+## 🔒 Security
 
-Install development tools based on your project needs:
+- ✅ No secrets or API keys in code (`.env` is in `.gitignore`)
+- ✅ No authentication required (uses free public API)
+- ✅ External links use `rel="noopener"` attribute
+- ✅ React JSX escaping for HTML content
+- ✅ Strict TypeScript type checking enabled
+- ✅ ESLint rules enforce best practices
+- ✅ No server-side code execution (static SPA)
 
-- [Git](https://git-scm.com/) for version control
-- [Node.js](https://nodejs.org/) for JavaScript/TypeScript development
-- Language runtimes for Python, Java, Go, or other languages you plan to use
+## 🌍 Localization
 
-See the full list of [additional components](https://code.visualstudio.com/docs/setup/additional-components).
+- **Language**: French
+- **Timezone**: Europe/Zurich (CET/CEST)
+- All UI labels, descriptions, and content are in French
 
-### Step 4 (optional): Install VS Code Extensions
+## 📦 Deployment
 
-Customize VS Code with extensions from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/VSCode):
+### GitHub Pages Setup
 
-- Formatters
-- Language extensions and debuggers
-- Tools for your favorite frameworks
+1. Go to repository **Settings → Pages**
+2. Set **Source** to **GitHub Actions** (not "Deploy from a branch")
+3. The GitHub Actions workflow will automatically build and deploy on every push to `main`
 
-</details>
+### How Deployment Works
 
-## Challenge
+The workflow (`.github/workflows/deploy.yml`):
+1. Runs on every push to `main` or manual trigger (`workflow_dispatch`)
+2. Checks out code and sets up Node.js 20
+3. Installs dependencies with `npm ci`
+4. Runs `npm run build` (TypeScript check + Vite production build)
+5. Uploads `dist/` folder as artifact
+6. Deploys to GitHub Pages environment
 
-The challenge consists in creating an application with the following requirements:
+### Base Path Configuration
 
-- REQ01: The application is a "meteo" des neiges application that displays weather information for skiing resorts in the Geneva region (e.g. Chamonix, Verbier, Zermatt, etc.)
-- REQ02: The application is a static web application
-- REQ03: The application is automatically deployed in GitHub Pages
-- REQ04: Deployment to the GitHub Pages associated with the repository must happen automatically upon push in the `main` branch
-- REQ05: The application must have a responsive design that works on both desktop and mobile devices, use visual indicators (icons or images) for weather conditions, and organize resort information in a clear, scannable layout (e.g., cards or a dashboard grid).
-- REQ06: The application must be built securely following best practices for web application development
-- REQ07: The application must use publicly available APIs to retrieve weather data
+The app is deployed at `https://<owner>.github.io/test1/`. The base path is configured in:
+- **vite.config.ts**: `base: '/test1/'`
+- **App.tsx**: `<BrowserRouter basename="/test1">`
 
-There are several ways to interact with GitHub Copilot to build the application.
+⚠️ **Important**: If the repository is renamed, **both values must be updated in sync**.
 
-### Use Copilot Coding Agent (recommended)
+## 🌐 Browser Compatibility
 
-### Use Copilot in Visual Studio Code
+- Chrome/Edge 90+
+- Firefox 88+
+- Safari 14+
+- Requires ES2020 support
 
-### Use Copilot CLI
+## ⚡ Performance Optimizations
 
-## Challenge submission
+- **Code Splitting**: Vite automatically chunks code for optimal loading
+- **CSS Minification**: Tailwind CSS with tree-shaking
+- **API Caching**: React Query caches data with intelligent stale/fresh timing
+- **No Polyfills**: Assumes modern browser APIs
+- **Lazy Loading**: Components loaded on demand via React Router
 
-To submit your challenge got to https://github.com/dbroeglin/ghcp-car-challenge-judge/issues and submit a new issue. Share the sfollowing information:
+## 🐛 Troubleshooting
 
-- A name (or nickname) to identity the submitter
-- The URL to your GitHub repository containing the code for your application
-- The URL to the GitHub Pages where your application is deployed.
+### Build fails with TypeScript errors
+- Run `npm run lint` to check for issues
+- Ensure all files use proper TypeScript types
 
-Make sure that both URLs are publicly accessible.
+### Weather data not loading
+- Check browser console for errors
+- Verify Open-Meteo API is accessible: 
+  ```bash
+  curl "https://api.open-meteo.com/v1/forecast?latitude=45.9&longitude=6.8&current=temperature_2m"
+  ```
+- Check if IP is rate-limited (Open-Meteo has free tier limits)
+
+### Styling issues
+- Ensure Tailwind CSS is properly imported in `src/index.css`
+- Run `npm run build` to verify no CSS compilation errors
+
+## 🔮 Future Enhancements
+
+- Interactive map with resort locations using Leaflet
+- Extended weather forecast (5-day, 10-day)
+- Weather alerts and warnings
+- User preferences (favorite resorts, temperature units)
+- PWA features for offline support
+- Historical weather data
+- Server-side rendering for better SEO
+- Internationalization (i18n) support
+
+## 📄 License
+
+MIT
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow the project's TypeScript and coding conventions when submitting pull requests.
+
+---
+
+**Built with ❤️ using GitHub Copilot**
